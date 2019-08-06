@@ -1,0 +1,16 @@
+{
+  "name": "mts-sso-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@wdio/cli": "^5.11.12",
+    "@wdio/local-runner": "^5.11.12",
+    "@wdio/mocha-framework": "^5.11.0",
+    "@wdio/spec-reporter": "^5.11.7",
+    "source-map-support": "^0.5.13"
+  },
+  "scripts": {
+    "test": "yarn wdio wdio.conf.js"
+  }
+}
