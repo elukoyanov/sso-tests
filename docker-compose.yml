@@ -1,0 +1,33 @@
+version: "3.4"
+
+services:
+  e2e:
+    build: .
+    depends_on:
+      - chrome
+      - hub
+    environment:
+      - HOST=hub
+    volumes:
+      - ./tests/:/app/tests/
+      - ./reports/:/app/reports/
+    command: ["/bin/sh", "./wait-for-grid.sh", "yarn", "test"]
+
+  hub:
+    image: selenium/hub
+    ports:
+      - 4444:4444
+    logging:
+      driver: "none"
+
+  chrome:
+    image: selenium/node-chrome
+    ports:
+      - 5900
+    environment:
+      - HUB_PORT_4444_TCP_ADDR=hub
+      - HUB_PORT_4444_TCP_PORT=4444
+    depends_on:
+      - hub
+    logging:
+      driver: "none"

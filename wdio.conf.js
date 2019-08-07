@@ -9,7 +9,7 @@ exports.config = {
   runner: "local",
   //
   // Override default path ('/wd/hub') for chromedriver service.
-  hostname: "localhost",
+  hostname: process.env.HOST || "localhost",
   port: 4444,
   path: "/wd/hub",
   //
@@ -62,7 +62,7 @@ exports.config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "info",
+  logLevel: "error",
   //
   // Set specific log levels per logger
   // loggers:
@@ -102,8 +102,16 @@ exports.config = {
   // Services take over a specific job you don't want to take care of. They enhance
   // your test setup with almost no effort. Unlike plugins, they don't add new
   // commands. Instead, they hook themselves up into the test process.
-  // services: ["chromedriver"],
+  // services: ["docker"],
 
+  // dockerOptions: {
+  //   image: "selenium/standalone-chrome",
+  //   healthCheck: "http://process.env.HOST:4444",
+  //   options: {
+  //     p: ["4444:4444"],
+  //     shmSize: "2g"
+  //   }
+  // },
   // Framework you want to run your specs with.
   // The following are supported: Mocha, Jasmine, and Cucumber
   // see also: https://webdriver.io/docs/frameworks.html
@@ -118,9 +126,7 @@ exports.config = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter.html
-  reporters: [
-    "spec"
-  ],
+  reporters: ["spec"],
 
   //
   // Options to be passed to Mocha.
