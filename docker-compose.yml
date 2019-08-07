@@ -8,6 +8,8 @@ services:
       - hub
     environment:
       - HOST=hub
+      - TEST_PHONE_NUMBER=
+      - TEST_PASSWORD=
     volumes:
       - ./tests/:/app/tests/
       - ./reports/:/app/reports/

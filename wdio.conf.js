@@ -45,6 +45,7 @@ exports.config = {
   maxInstances: 10,
   capabilities: [
     {
+      pageLoadStrategy: "none",
       browserName: "chrome",
       "goog:chromeOptions": {
         args: ["window-size=1280,1024"]
@@ -62,7 +63,7 @@ exports.config = {
   // Define all options that are relevant for the WebdriverIO instance here
   //
   // Level of logging verbosity: trace | debug | info | warn | error | silent
-  logLevel: "error",
+  logLevel: "warning",
   //
   // Set specific log levels per logger
   // loggers:
@@ -126,15 +127,25 @@ exports.config = {
   // Test reporter for stdout.
   // The only one supported by default is 'dot'
   // see also: https://webdriver.io/docs/dot-reporter.html
-  reporters: ["spec"],
+  reporters: [
+    "spec",
+    [
+      "allure",
+      {
+        outputDir: "./reports/allure/",
+        disableWebdriverStepsReporting: false,
+        disableWebdriverScreenshotsReporting: false
+      }
+    ]
+  ],
 
   //
   // Options to be passed to Mocha.
   // See the full list at http://mochajs.org/
   mochaOpts: {
     ui: "bdd",
-    timeout: 60000
-  }
+    timeout: 30000
+  },
   //
   // =====
   // Hooks
@@ -202,8 +213,11 @@ exports.config = {
    * Function to be executed after a test (in Mocha/Jasmine) or a step (in Cucumber) starts.
    * @param {Object} test test details
    */
-  // afterTest: function (test) {
-  // },
+  afterTest: function(test) {
+    if (test.error !== undefined) {
+      browser.takeScreenshot();
+    }
+  }
   /**
    * Hook that gets executed after the suite has ended
    * @param {Object} suite suite details

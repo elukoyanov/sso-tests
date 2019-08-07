@@ -6,11 +6,12 @@ const logins = require("../data/logins");
 const { formatPhone } = require("../utils");
 
 describe("Authentication page.", () => {
-  beforeEach(() => {
-    loginPage.open();
+  beforeEach(async () => {
+    await loginPage.open();
   });
 
-  it.only("User log in successfully with correct credentials.", async () => {
+  // нормальный вход
+  it("User log in successfully with correct credentials.", async () => {
     await loginPage.login(logins.userCorrect);
     await homePage.waitLoad();
 
@@ -18,16 +19,8 @@ describe("Authentication page.", () => {
     assert.equal(phoneText, formatPhone(logins.userCorrect.phone));
   });
 
-  xit("Error message with number of attempts is shown, when password is incorrect.", async () => {
-    await loginPage.login(logins.userWithWrongPass);
-
-    const helpText = await loginPage.inputPasswordHelpText;
-    assert(helpText.includes("Вы ввели неверный пароль"));
-    assert(helpText.includes("Осталось попыток 2 из 3"));
-  });
-
-  // неправильный пароль - правильный - ок - неправильный - счетчик работает заного
-  xit("False password counts resets after login.", async () => {
+  // неправильный пароль - успешный логин - неправильный пароль - счётчик работает заного
+  it("False password counts resets after login.", async () => {
     await loginPage.login(logins.userWithWrongPass);
 
     const helpText = await loginPage.inputPasswordHelpText;
@@ -50,8 +43,9 @@ describe("Authentication page.", () => {
     assert(helpTextAfter.includes("Осталось попыток 2 из 3"));
   });
 
-  // неправильный пароль - неправильный - неправильный - капча
+  // неправильный пароль - неправильный - неправильный - блок аккаунта
   it("Account is blocked after 3 wrong passwords", async () => {
+  // неправильный пароль - неправильный - неправильный - капча
   // it("Captcha appears after 3 password errors", async () => {
     await loginPage.login(logins.userWithWrongPass);
 

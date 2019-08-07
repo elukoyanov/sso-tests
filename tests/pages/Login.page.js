@@ -1,7 +1,12 @@
 class LoginPage {
-  open() {
-    browser.deleteCookies();
-    browser.url("");
+  async open() {
+    await browser.reloadSession();
+    await browser.url("");
+    await this.waitLoad();
+  }
+
+  async waitLoad() {
+    await this.inputPhone.then(el => el.waitForEnabled(30000));
   }
 
   // phone input form

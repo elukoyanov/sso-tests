@@ -32,13 +32,13 @@ class HomePage {
   }
 
   async waitLoad() {
-    await this.accountPhone.then(el => el.waitForExist());
+    await this.accountPhone.then(el => el.waitForExist(30000));
     await browser.waitUntil(
       () => {
         return this.accountPhone.then(el => el.getText()) !== "";
       },
-      10000,
-      "expected phone to appear in 10s"
+      30000,
+      "expected phone to appear in 30s"
     );
   }
 }
